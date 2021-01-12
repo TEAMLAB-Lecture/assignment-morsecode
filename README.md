@@ -1,30 +1,42 @@
-# Homework - Baseball
+# Homework - morsecode
 
 ## 개요
 
-본 Baseball Game Lab은 **_간단한_** 숫자 맞추기 게임입니다. 컴퓨터는 3자리의 Random Number를 생성하고 사용자는 숫자를 입력하면, 그 세자리 숫자가 Random Number와 얼마나 비슷한지에 따라 Strike과 Ball로 알려주는 게임입니다. 간단한 규칙은 다음과 같습니다.
+이번 Lab은 파이썬이 제공하는 데이터 구조중 가장 활용성이 높은 Dict Type의 데이터를 활용하여 모스부호(Morse Code)를 번역하는 프로그램을 개발한다.  이미 우리가 잘 알고 있듯이 모스 부호는 일종의 신호로 빛이나 소리를 이용하여 메세지를 전달하는 방식을 의미한다<sup id="MorseCodeWiki">[1](#f1)</sup>. 
 
-- 사용자가 입력한 숫자와 컴퓨터가 생성한 숫자의 한 숫자와 자릿수(숫자의 위치)가 모두 일치하면 1 Strike
-- 자릿수는 다르나 입력한 한 숫자가 존재하면 1 Ball
-- 세자리 숫자를 정확히 입력하면 3 Strike로 게임 종료
+실제 모스 부호는 정해진 규칙이 있는데, 일반적인 규칙은 아래와 같습니다.
+![모스부호 규칙](http://1.bp.blogspot.com/-rk4DfdE6428/T17CmLVk9CI/AAAAAAAAARk/5xZlW_wMnLw/s1600/morse-code-letters.jpg)
 
-이 때 컴퓨터가 생성하는 세 자리 숫자는 반드시 같은 숫자를 한 개만 가지고 있어야 합니다. 예를 들면 332, 474, 555 처럼 같은 숫자가 2개 이상있는 숫자는 게임에서 제외되어야 합니다. 실제 볼 스트라이크 판정 예제는 다음과 같습니다.
+이러한 규칙을 컴퓨터에서 사용하는 문자중 "-", "."을 사용해서 나타내면 아래와 같이 표현할 수 있습니다.
 
-컴퓨터 생성 숫자           | 사용지 입력 | 판정 결과
---------       | --- | ---
-472           | 123 | 0 Strike, 1 Ball
-472           | 547 | 0 Strike, 2 Ball
-472           | 247 |0 Strike, 3 Ball
-472           | 742 |1 Strike, 2 Ball
-472           | 472 |3 Strike
+문자 | 부호 | 문자 | 부호 | 문자 | 부호 | 문자 | 부호  
+---- | ---  | ---- | ---  | ---- | ---  | ---- | ---- 
+A | .- | B | -... | C | -.-. | D | -..  
+E | . | F | ..-. | G | --. | H | ....  
+I | .. | J | .--- | K | -.- | L | .-..  
+M | -- | N | -. | O | --- | P | .--.  
+Q | --.- | R | .-. | S | ... | T | -  
+U | ..- | V | ...- | W | .-- | X | -..-  
+Y | -.-- | Z | --.. 
 
- 어떻게 할지 걱정될 수 도 있지만, 꽤 많은 힌트와 함께 여러분들을 바른 길로 인도해주는 함수를 제시할 것 입니다. 너무 걱정말고 시작해 봅시다.
+이번 Lab은 사용자가 알파벳 문자를 입력하면 모스 부호로 모스 부호를 입력하면 알파벳으로 바꿔주는 모스부호 변환기 프로그램을 만드는 것을 목적으로 합니다. 예를 들면 아래와 같은 형태입니다.
+
+사용자의 문자열 입력 
+> 사용자 입력: SOS
+> 출력값: ... --- ...
+
+사용자의 모스부호 입력 
+> 사용자 입력: ... --- ...
+> 출력값: SOS
+
+물론 변환이 불가능한 입력에 한해서는 에러 메세지를 출력해야 합니다. 지금까지 처럼요
+이미 Baseball을 통해 다양한 코딩 방식에 대해 경험한 여러분들에겐 그리 어렵지 않은 숙제일 거라고 믿습니다. 예 물론 제 희망사항입니다. 즐거운 마음으로 도전해봅시다.
 
 
 ## 숙제 다운로드 방법
 
 1. 아래링크를 클릭하여 숙제 github repository를 복사함
-    [https://classroom.github.com/a/vDDxuaHC](https://classroom.github.com/a/vDDxuaHC)
+    [https://classroom.github.com/a/i6YRGtlL](https://classroom.github.com/a/i6YRGtlL)
 2. 아래 코드를 사용하여 숙제 코드 github repository를 자신의 컴퓨터로 클론함
     ```
     git clone <레포지토리 URL>
@@ -32,69 +44,146 @@
     ![](img/code_repository_example.png)
 3. 해당 폴더로 이동하여 자신의 코드를 수정함
 
+## 수정전 알아두어야 할 파이썬 함수 `join`
+이번 Lab을 진행하기전에 알아두고 시작하면 좋은 파이썬 함수가 있습니다. 바로 List에 있는 값들을 String type의 값으로 변환 시켜줄때 사용하는 join 함수이다. 함수의 사용법은 아래와 같습니다.
 
-## Baseball Game Overview
-단순히 Strike와 볼판정만 해주면 좋겠지만 본 Lab에서는 처음으로 사용자의 입력에 대한 오류 처리를 실시하여야 합니다. 여러분들도 가끔 웹 사이트에 접속할 때 잘못된 입력을 바로 잡아주는 프로그램을 본적이 있을 것 입니다.
-예를 들면, 이메일 주소를 입력할 때 "@"를 쓰지 않았다던가, 비밀번호 입력시 숫자를 같이 쓰지 않았다던가 할 경우, 자동으로 프로그램이 오류 입력임을 지정하고 재입력을 하게해 줄 것입니다.
-본 프로그램도 마찬가지로 사용자가 아래와 같이 잘못 입력했을 경우, "Wrong Input" 이라는 메세지를 남기며 오류 처리를 해 줍니다.
+```python
+>>> test_list = ["a","b","c","d","e"]
+>>> "-".join(test_list)
+'a-b-c-d-e'
+>>> ".".join(test_list)
+'a.b.c.d.e'
+>>> " ".join(test_list)
+'a b c d e'
+```
+위 코드에서 보듯이 `join` 함수를 사용법 `"연결부호".join(연결할 리스트 변수)` 로 이루어 져있다. 부호가 변환에 따라 연결된 List 값도 각각 변환되어 출력됩니다. `join`함수는 변환된 모스부호를 연결해서 표현할때 유용하게 사용될 수 있는 함수이므로 참고하기 바랍니다.
 
--사용자가 숫자 대신 문자가 포함된 입력을 했을 경우 (ex. ab3)
-- 사용자가 실수를 입력했을 경우 (ex. 23.5)
-- 사용자가 입력한 세 자리 정수에 중복되는 숫자가 있을 경우  (ex. 333)
-
-또한 사용자가 숫자를 정확히 입력하여 "3 Strikes" 나왔을 경우, 사용자가에게 한번 더 게임을 할 의향이 있는지 물어보고 의향이 있을 경우 다시 게임을 실행 시킵니다. 이 때 아래와 같은 조건으로 게임을 재시작을 경정합니다.
-
-- 사용자가 "Y" 또는 "Yes"라고 입력했을 경우 대소문자에 상관없이 게임을 재시작한다. 즉 "y", "yEs", "yes" 등의 경우에도 게임은 다시 시작된다.
-- 사용자가 "N" 또는 "No"라고 입력했을 경우 대소문자에 상관없이 게임을 종료한다. 즉 "n", "nO", "NO" 등의 경우에도 게임은 종료된다.
-- 사용자가 "YES" 또는 "NO"와 관련된 단어 이외에 입력을 하였을 경우 "Wrong Input" 이라고 출력되면서 다시 사용자의 입력을 받는다.
-
-또 다른 종료 조건으로 사용자가 게임 중 `0`를 입력하게 되면 종료해야 합니다. 이는 Lab #8의 Factorial Calculator의 종료 조건과 같습니다.
-
-또한 새로운 게임이 시작할 때는 반드시 `Random Number is :  xxx` 라는 문자가 출력되면서 `xxx` 부분에는 컴퓨터가 random하게 생성한 것을 표시해줍니다.
-이는 자동 채점 프로그램을 동작하게 하기 위한 것으로 표시 되지 않을 경우 컴퓨터가 채점을 하지 못합니다. 실제 돌아가는 프로그램은 아래와 같습니다.
-
- ![프로그램 실행 스크린샷](https://raw.githubusercontent.com/TeamLab/lab_for_gachon_cs50/master/lab_9_baseball_game/baseball_game_screenshot.png)
-
- ![0으로 종료되는 스크린샷](https://raw.githubusercontent.com/TeamLab/lab_for_gachon_cs50/master/lab_9_baseball_game/baseball_game_screenshot_2.png)
 
 ## baseball_game.py 파일 Overview
-`atom`로 `baseball_game.py`을 열어 전체적인 개요를 봅시다. `atom baseball_game.py`명령으로 파일을 열어보면 `main` 함수와 여러개의 함수들이 존재할 것 입니다. 각 함수들은 여러분께서 직접 작성해서 제출해야 하는 함수이고, `main` 함수는 실제 baseball game을 실행하는 함수입니다. 각 함수의 구현 내용은 아래와 같습니다.
+`atom`으로로 `morsecode.py`을 열어 전체적인 개요를 살펴봅시다. `atom morsecode.py`명령으로 파일을 열어보면 `main` 함수와 여러개의 함수들이 존재할 것 입니다. 각 함수들은 여러분께서 직접 작성해서 제출해야 하는 함수이고, `main` 함수는 실제 morsecode를 실행하는 함수입니다. 먼저 본 Lab에서 제공하는 두개의 Helper 함수를 살펴봅시다.
+
+첫 번째 Helper 함수는 `get_morse_code_dict` 함수입니다. 본 함수를 사용자가 호출 할 경우, 모스부호를 호출할 수 있는 dict type의 데이터를 반환해준다. 함수는 아래와 같습니다.
+
+```python
+def get_morse_code_dict():
+    morse_code = {
+        "A": ".-", "N": "-.", "B": "-...", "O": "---", "C": "-.-.", 
+        "P": ".--.", "D": "-..", "Q": "--.-", "E": ".",
+        "R": ".-.", "F": "..-.", "S": "...", "G": "--.", 
+        "T": "-", "H": "....", "U": "..-", "I": "..", "V": "...-",
+        "K": "-.-", "X": "-..-", "J": ".---", "W": ".--", 
+        "L": ".-..", "Y": "-.--", "M": "--", "Z": "--.."
+    }
+    return morse_code
+```
+
+위 함수는 아래와 같이 활용 가능합니다.
+
+```python
+>>> morse_code_dict = get_morse_code_dict()
+>>> morse_code_dict["A"]
+`.-` 
+```
+
+두 번째 Helper 함수는 `get_help_message` 함수입니다. 본 함수를 사용자가 호출 할 경우, 아래와 같이 모스부호에 대한 설명이 출력됩니다. `main` 함수에서 사용할 함 수이므로 당장 신경쓸 필요는 없습니다.
+
+```python
+>>> morsecode.get_help_message()
+'HELP - International Morse Code List\nA: .-\tB: -...\tC: -.-.\tD: -..\tE: .\t\n
+F: ..-.\tG: --.\tH: ....\tI: ..\tJ: .---\t\nK: -.-\tL: .-..\tM: --\tN: -.\tO: --
+-\t\nP: .--.\tQ: --.-\tR: .-.\tS: ...\tT: -\t\nU: ..-\tV: ...-\tW: .--\tX: -..-\
+tY: -.--\t\nZ: --..\t'
+>>>
+```
+
+위의 결과값중 `\t`는 TAB Size로 간격을 벌리는 특수 기호입니다. 실제로 Console창에서 실행시킬때는 8칸씩 글자가 떨어져서 나옵니다.
+
+이제 수정해야 할 함수 리스트를 살펴 봅시다.
 
 함수           | 설명 
 --------       | ---
-is_digit      | 문자열 값을 입력받아, 정수로 변환 가능할 경우는 True, 그렇지 않을 경우는 False로 변환해주는 함수
-is_between_100_and_999      | 문자열 값을 입력받아, 정수로 변환하여 100이상 1000미만일 경우 True, 그렇지 않을 경우는 False를 반환해주는 함수. 이 때 입력되는 문자열 값은 정수형태의 문자열 값 임이 보장됨 ex) 324, 1103 
-is_duplicated_number  | 문자열로 된 세자리 양의 정수 값을 입력 받아 정수로 변환하였을 경우 중복되는 수가 있으면 True, 그렇지 않을 경우는 False를 반환해주는 함수. 이 때 문자열로 된 세자리 양의 정수값의 입력이 보장됨 ex) 117 - True, 123 - False, 103 - False, 113 - True
-is_validated_number | 문자열 값을 입력받아 아래 세가지 조건에 맞으면 True, 그렇지 않으면 False를 반환함 1) 숫자형 문자열이며, 2) 100이상 1000미만이며, 3) 중복되는 숫자가 없을 경우. 위의 세 가지 함수를 사용하여 구현이 가능함
-get_not_duplicated_three_digit_number  | 입력 값은 없으며, 중복되는 숫자가 없는 세자리 정수값이 반환됨, 문자열이 아닌 정수값으로 반환됨. 이때 `get_random_number()` 함수를 사용하여 random number를 생성하고 생성된 random number에 중복되는 숫자가 없을 경우에만 해당 숫자를 반환해줌 
-get_strikes_or_ball   | 사용자가 입력한 세 자리 정수 문자열과, 컴퓨터가 자동으로 생성한 세 자리 정수 문자열을 입력받아, baseball game 규칙에 맞춰 [strkies, balls]을 반환해줌. 리스트 형태로 반환하여 strikes와 balls는 Integer Type 값 
-is_yes    | 문자열값을 입력받아 해당 입력값이 대소문자에 관계없이 "Y" 또는 "YES"일 경우 True, 그렇지 않을 경우 False를 반환함
-is_no    | 문자열값을 입력받아 해당 입력값이 대소문자에 관계없이 "N" 또는 "NO"일 경우 True, 그렇지 않을 경우 False를 반환함
+is_help_command | 문자열값을 입력받아 입력된 값이 대소문자 구분없이 "H" 또는 "HELP"일 경우 True, 그렇지 않을 경우 False를 반환함
+is_validated_english_sentence | 문자열값을 입력받아 입력된 값이 모스부호로 변환이 가능하면 True를 불가능하면 False를 반환함. 모스 부호로 변환되는 경우는 아래 세 가지에 해당되지 않는 경우임  1) 숫자가 포함되어 있음, 2) _@#$%^&*()-+=[]{}"';:\|`~ 와 같은 특수문자가 포함되어 있음, 3) 문장부호(.,!?)를 제외하면 입력값이 없거나 빈칸만 입력했을 경우
+is_validated_morse_code | 모스부호 형태의 무자열 값을 입력받아, 알파벳으로 변환이 가능하면 True, 불가능하면 False를 반환함. 알파벳으로 변환되는 경우는 아래 두 가지에 해당되지 않는 경우임 1) "-","."," "외 다른 글자가 포함되어 있는 경우 2) get_morse_code_dict 함수에 정의된 Morse Code 부호외 다른 코드가 입력된 경우 ex)......
+get_cleaned_english_sentence |  문자열값으로 Morse Code로 변환 가능한 영어 문장을 입력받아, 입력된 영어문장에서 4개의 문장부호를 ".,!?" 삭제하고, 양쪽끝 여백을 제거한 문자열 값 반환
+decoding_character | 문자열값으로 get_morse_code_dict 함수로 알파벳으로 치환이 가능한 값을 입력받아 Morse Code를 알파벳으로 변환한 값을 반환함
+encoding_character | 문자열값으로 알파벳 한 글자의 입력받아 get_morse_code_dict 함수의 반환 값으로 인해 변환된 모스부호 문자열값을 반환함
+decoding_sentence |  문자열 값으로 모스 부호로 이루어진 문자열을 입력받아 모스부호를 알파벳으로 변환한 문자열을 반환함 
+encoding_sentence | 문자열 값으로 모스 부호로 변환이 가능한 영어문장을 입력받아, 입력된 영어문장 문자열 값을 모스부호로 변환된 알파벳으로 변환한 문자열을 반환하되, 양쪽 끝에 빈칸은 삭제함 이때 중요한 것은 모든 모스부호는 한칸씩 띄워쓰기를 해서 표현되어야 하며, 만약 입력된 영어 문장에서 단어와 단어사이에는 두 칸의 띄워쓰기를 표시해야함 
 
-상당히 많고 복잡하고, 게다가 어렵기까지 합니다. 일단 하나하나 해결해보시길 바랍니다.
-참고로 `get_random_number()` 함수는 임의의 3자리 자연수를 반환하는 함수로 반드시 써야 되는 함수니 `get_not_duplicated_three_digit_number` 함수에서 사용하시기 바랍니다.
+> morsecode에서 encoding_sentence만 pass되지 않는다는 분들이 많으셔서 전체 공지합니다!
+encoding_sentence 함수에서는 영어 단어 사이에 띄어쓰기가 두 개 이상일 경우 한 개로 처리해준 후 모스부호로 변환해 주어야 합니다!
+
+
+마지막 `encoding_sentence` 함수가 조금 이해하기 어려울 건데 다음 그림과 같다고 생각하면 됩니다. 즉 `!`와 같은 문장부호는 삭제하고, 글자와 글자사이에는 한 칸의 여백을 단어와 단어 사이에는 두 칸의 여백을 줘서 모스부호를 출력하면 됩니다.
+
+![모스부호 출력 예시](https://raw.githubusercontent.com/TeamLab/lab_for_gachon_cs50/master/lab_10_morsecode/morsecode_example.png)
 
 ## main 함수 수정하기 
-위의 함수도 상당히 어렵지만 본 Lab의 가장 어려운 숙제는 바로 `main`함수를 수정하는 일 입니다. `main`함수의 기본 template은 아래와 같습니다.
+이번엔 메인함수이다. 이번 Lab의 메인함수는 비교적 간단합니다. 다음이 기본 Template입니다.
 
 ```python
 def main():
-    print("Play Baseball")
-    user_input = 999
-    random_number = str(get_not_duplicated_three_digit_number())
-    print("Random Number is : ", random_number)
+    print("Morse Code Program!!")
     # ===Modify codes below=============
-    # 위의 코드를 포함하여 자유로운 수정이 가능함
+
 
 
     # ==================================
-    print("Thank you for using this program")
-    print("End of the Game")
+    print("Good Bye")
+    print("Morse Code Program Finished!!")
 ```
-template은 lab 7 factorial calculator와 흡사하면서도 조금 다릅니다. 일단 프로그램이 시작되면 "Play Baseball" 한줄과 "Random Number is : " 라는 한 줄이 화면에 찍히고 시작합니다. 앞에서 설명했듯이 반드시 새로운 baseball game이 시작되면 `print("Random Number is : ", random_number)` 가 실행되야 합니다. `random_number` 변수는 수강생이 임의로 수정가능하겠지만 `get_not_duplicated_three_digit_number` 함수를 잘 작성하여 `random_number`에 할당해 주는게 이 숙제를 해결하는데 있어 가장 쉬울 것 입니다.
-이 숙제가 까다로운 것은 숙제 자체도 그렇지만, 숙제를 검사할 때 검사 프로그램의 한계로 인해 위쪽 screen shot 처럼 작동되지 않으면 올바르게 코딩했음에도 불구하고 pass에 실패할 수도 있습니다.
-한 가지 유의할 점은 사용자의 입력을 받을 때 `print` 문을 쓴 다음 `input`문을 쓰지 말고 `input` 문만 사용하여 입력을 받아야 합니다. 예를 들면 `user_input = input('Input guess number : ')` 형태로 작성되어야 합니다. 이 또한 강의자의 귀차니즘과 개발 능력 한계니 이해해주면 좋겠습니다.
-먼저 각 개별 함수를 목적에 맞게 잘 수정한 후, 개별 함수들을 잘 활용하여 `main` 함수를 작성하기 바랍니다. 실패할 가능성이 높은 함수지만, 굉장히 즐 거운 작업이 될 것 입니다.
+`main` 함수는 다음과 같은 규칙을 가진다.
+
+1. 사용자가 0을 입력하면 종료된다.
+2. 사용자가 대소문자에 상관없이 "h"또는 "help"를 입력하면 `get_help_message` 함수를 호출하여 아래와 같이 출력된다. 
+```python
+Input your message(H - Help, 0 - Exit): H
+HELP - International Morse Code List
+A: .-   B: -... C: -.-. D: -..  E: .
+F: ..-. G: --.  H: .... I: ..   J: .---
+K: -.-  L: .-.. M: --   N: -.   O: ---
+P: .--. Q: --.- R: .-.  S: ...  T: -
+U: ..-  V: ...- W: .--  X: -..- Y: -.--
+Z: --..
+```
+3. 모스부호로 변환이 가능한 알파벳 문장이 입력되면 모스부호로 변환된 값이 출력된다.
+```python
+Input your message(H - Help, 0 - Exit): SOS
+... --- ...
+Input your message(H - Help, 0 - Exit): Hello!
+.... . .-.. .-.. ---
+Input your message(H - Help, 0 - Exit): This is Gachon
+ - .... .. ...  .. ...  --. .- -.-. .... --- -.
+```
+
+4. 알파벳으로 변환이 가능한 모스부호가 입력되면 알파벳으로 변환해준다.
+```
+Input your message(H - Help, 0 - Exit): ... --- ...
+SOS
+Input your message(H - Help, 0 - Exit): ... . ...
+SES
+Input your message(H - Help, 0 - Exit): . -..- ---
+EXO
+Input your message(H - Help, 0 - Exit): .... --- -
+HOT
+Input your message(H - Help, 0 - Exit): . -..- .. -..
+EXID
+```
+5. 그외 변환이 불가능한 입력일 경우 에러 메세지를 출력한다.
+```python
+Input your message(H - Help, 0 - Exit): I'm Gachon.
+Wrong Input
+Input your message(H - Help, 0 - Exit): This is "CS50".
+Wrong Input
+Input your message(H - Help, 0 - Exit): Hello 123!
+Wrong Input
+```
+
+실제 실행된 프로그램의 예제화면은 아래와 같습니다.
+
+![프로그램 실행 예시](https://raw.githubusercontent.com/TeamLab/lab_for_gachon_cs50/master/lab_10_morsecode/implementation_example.png)
+
 
 
 ## 제출방법
